@@ -4,9 +4,6 @@
         <meta name="layout" content="main" />
         <g:set var="entityName" value="${message(code: 'semesterModule.label', default: 'SemesterModule')}" />
         <title><g:message code="default.list.label" args="[entityName]" /></title>
-        <asset:javascript src="jquery-ui.min.js"/>
-        <!-- Drag and drop -->
-        <asset:javascript src="semestertimetable.js"/>
         <asset:stylesheet src="jquery-ui.min.css"/>
 
     </head>
@@ -26,6 +23,9 @@
             <div id="semestertimetable" class="container">
                 <div id="semesters" class="row">
                     <div class="col">
+                        <span class="semesterTitle"></span>
+                    </div>
+                    <div class="col">
                         <span class="semesterTitle">Semester 1</span>
                     </div>
                     <div class="col">
@@ -44,13 +44,75 @@
                         <span class="semesterTitle">Semester 6</span>
                     </div>
                 </div>
-                <div id="semesterModules" class="row">
-                    <g:each var="semesterModule" in="${semesterModuleList}">
-                        <div class="semesterModule col bg-primary ui-state-default">
-                            <span class="title">${semesterModule.name}</span>
-                            <span class="credits">${semesterModule.credits}</span>
-                        </div>
-                    </g:each>
+                <div id="moduleContainer" class="row">
+                    <div class="col">
+                        Module:
+                    </div>
+                    <ul id="semester1" class="col">
+
+                    </ul>
+                    <ul id="semester2" class="col">
+
+                    </ul>
+                    <ul id="semester3" class="col">
+
+                    </ul>
+                    <ul id="semester4" class="col">
+
+                    </ul>
+                    <ul id="semester5" class="col">
+
+                    </ul>
+                    <ul id="semester6" class="col">
+
+                    </ul>
+                </div>
+                <div id="credits" class="row">
+                    <div class="col">
+                        <span class="credits">
+                            Credits:
+                        </span>
+                    </div>
+                    <div class="col">
+                        <span class="credits">
+
+                        </span>
+                    </div>
+                    <div class="col">
+                        <span class="credits">
+
+                        </span>
+                    </div>
+                    <div class="col">
+                        <span class="credits">
+
+                        </span>
+                    </div>
+                    <div class="col">
+                        <span class="credits">
+
+                        </span>
+                    </div>
+                    <div class="col">
+                        <span class="credits">
+
+                        </span>
+                    </div>
+                    <div class="col">
+                        <span class="credits">
+
+                        </span>
+                    </div>
+                </div>
+                <div class="row">
+                    <ul id="semesterModules">
+                        <g:each var="semesterModule" in="${semesterModuleList}">
+                            <li class="semesterModule ui-state-default">
+                                <span class="title">${semesterModule.name}</span>
+                                <span class="credits">${semesterModule.credits}</span>
+                            </li>
+                        </g:each>
+                    </ul>
                 </div>
             </div>
 

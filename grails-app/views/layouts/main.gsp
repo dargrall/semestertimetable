@@ -11,6 +11,10 @@
 
     <asset:stylesheet src="application.css"/>
 
+    <asset:stylesheet src="jquery-ui.css" rel="stylesheet"/>
+    <asset:javascript src="jquery-ui-1.12.1/external/jquery/jquery.js"/>
+    <asset:javascript src="jquery-ui-1.12.1/jquery-ui.js"/>
+
     <g:layoutHead/>
 </head>
 

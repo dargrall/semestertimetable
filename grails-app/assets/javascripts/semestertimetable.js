@@ -1,6 +1,8 @@
 $(document).ready(function() {
-    $('#semesterModules').draggable({
-        revert: true
-    });
-    $('#semesters').droppable();
+    
+    // $('#semesterModules').sortable();
+
+// --------------------------------------------
+// - ConnectToSortable nutzen!!
+// - Gedropptes element der Liste hinzufügen und aus der anderen entfernen
 });

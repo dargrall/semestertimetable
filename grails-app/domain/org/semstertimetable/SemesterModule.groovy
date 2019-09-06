@@ -1,10 +1,9 @@
 package org.semstertimetable
 
 class SemesterModule {
-    int id
     String name
     int semesterId
-    int credits
+    int credits    
 
     static constraints = {
         name()

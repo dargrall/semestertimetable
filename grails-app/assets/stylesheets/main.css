@@ -600,3 +600,7 @@ img.grails-logo {
 #semesters div:nth-child(2n) {
     background-color: #dddddd;
 }
+
+#moduleContainer {
+    height: 200px;
+}
