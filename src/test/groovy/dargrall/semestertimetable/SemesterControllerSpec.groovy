@@ -1,11 +1,11 @@
-package org.semstertimetable
+package dargrall.semestertimetable
 
 import grails.testing.gorm.DomainUnitTest
 import grails.testing.web.controllers.ControllerUnitTest
 import grails.validation.ValidationException
 import spock.lang.*
 
-class SemesterModuleControllerSpec extends Specification implements ControllerUnitTest<SemesterModuleController>, DomainUnitTest<SemesterModule> {
+class SemesterControllerSpec extends Specification implements ControllerUnitTest<SemesterController>, DomainUnitTest<Semester> {
 
     def populateValidParams(params) {
         assert params != null
@@ -17,7 +17,7 @@ class SemesterModuleControllerSpec extends Specification implements ControllerUn
 
     void "Test the index action returns the correct model"() {
         given:
-        controller.semesterModuleService = Mock(SemesterModuleService) {
+        controller.semesterService = Mock(SemesterService) {
             1 * list(_) >> []
             1 * count() >> 0
         }
@@ -26,8 +26,8 @@ class SemesterModuleControllerSpec extends Specification implements ControllerUn
         controller.index()
 
         then:"The model is correct"
-        !model.semesterModuleList
-        model.semesterModuleCount == 0
+        !model.semesterList
+        model.semesterCount == 0
     }
 
     void "Test the create action returns the correct model"() {
@@ -35,7 +35,7 @@ class SemesterModuleControllerSpec extends Specification implements ControllerUn
         controller.create()
 
         then:"The model is correctly created"
-        model.semesterModule!= null
+        model.semester!= null
     }
 
     void "Test the save action with a null instance"() {
@@ -45,14 +45,14 @@ class SemesterModuleControllerSpec extends Specification implements ControllerUn
         controller.save(null)
 
         then:"A 404 error is returned"
-        response.redirectedUrl == '/semesterModule/index'
+        response.redirectedUrl == '/semester/index'
         flash.message != null
     }
 
     void "Test the save action correctly persists"() {
         given:
-        controller.semesterModuleService = Mock(SemesterModuleService) {
-            1 * save(_ as SemesterModule)
+        controller.semesterService = Mock(SemesterService) {
+            1 * save(_ as Semester)
         }
 
         when:"The save action is executed with a valid instance"
@@ -60,38 +60,38 @@ class SemesterModuleControllerSpec extends Specification implements ControllerUn
         request.contentType = FORM_CONTENT_TYPE
         request.method = 'POST'
         populateValidParams(params)
-        def semesterModule = new SemesterModule(params)
-        semesterModule.id = 1
+        def semester = new Semester(params)
+        semester.id = 1
 
-        controller.save(semesterModule)
+        controller.save(semester)
 
         then:"A redirect is issued to the show action"
-        response.redirectedUrl == '/semesterModule/show/1'
+        response.redirectedUrl == '/semester/show/1'
         controller.flash.message != null
     }
 
     void "Test the save action with an invalid instance"() {
         given:
-        controller.semesterModuleService = Mock(SemesterModuleService) {
-            1 * save(_ as SemesterModule) >> { SemesterModule semesterModule ->
-                throw new ValidationException("Invalid instance", semesterModule.errors)
+        controller.semesterService = Mock(SemesterService) {
+            1 * save(_ as Semester) >> { Semester semester ->
+                throw new ValidationException("Invalid instance", semester.errors)
             }
         }
 
         when:"The save action is executed with an invalid instance"
         request.contentType = FORM_CONTENT_TYPE
         request.method = 'POST'
-        def semesterModule = new SemesterModule()
-        controller.save(semesterModule)
+        def semester = new Semester()
+        controller.save(semester)
 
         then:"The create view is rendered again with the correct model"
-        model.semesterModule != null
+        model.semester != null
         view == 'create'
     }
 
     void "Test the show action with a null id"() {
         given:
-        controller.semesterModuleService = Mock(SemesterModuleService) {
+        controller.semesterService = Mock(SemesterService) {
             1 * get(null) >> null
         }
 
@@ -104,20 +104,20 @@ class SemesterModuleControllerSpec extends Specification implements ControllerUn
 
     void "Test the show action with a valid id"() {
         given:
-        controller.semesterModuleService = Mock(SemesterModuleService) {
-            1 * get(2) >> new SemesterModule()
+        controller.semesterService = Mock(SemesterService) {
+            1 * get(2) >> new Semester()
         }
 
         when:"A domain instance is passed to the show action"
         controller.show(2)
 
         then:"A model is populated containing the domain instance"
-        model.semesterModule instanceof SemesterModule
+        model.semester instanceof Semester
     }
 
     void "Test the edit action with a null id"() {
         given:
-        controller.semesterModuleService = Mock(SemesterModuleService) {
+        controller.semesterService = Mock(SemesterService) {
             1 * get(null) >> null
         }
 
@@ -130,15 +130,15 @@ class SemesterModuleControllerSpec extends Specification implements ControllerUn
 
     void "Test the edit action with a valid id"() {
         given:
-        controller.semesterModuleService = Mock(SemesterModuleService) {
-            1 * get(2) >> new SemesterModule()
+        controller.semesterService = Mock(SemesterService) {
+            1 * get(2) >> new Semester()
         }
 
         when:"A domain instance is passed to the show action"
         controller.edit(2)
 
         then:"A model is populated containing the domain instance"
-        model.semesterModule instanceof SemesterModule
+        model.semester instanceof Semester
     }
 
 
@@ -149,14 +149,14 @@ class SemesterModuleControllerSpec extends Specification implements ControllerUn
         controller.update(null)
 
         then:"A 404 error is returned"
-        response.redirectedUrl == '/semesterModule/index'
+        response.redirectedUrl == '/semester/index'
         flash.message != null
     }
 
     void "Test the update action correctly persists"() {
         given:
-        controller.semesterModuleService = Mock(SemesterModuleService) {
-            1 * save(_ as SemesterModule)
+        controller.semesterService = Mock(SemesterService) {
+            1 * save(_ as Semester)
         }
 
         when:"The save action is executed with a valid instance"
@@ -164,31 +164,31 @@ class SemesterModuleControllerSpec extends Specification implements ControllerUn
         request.contentType = FORM_CONTENT_TYPE
         request.method = 'PUT'
         populateValidParams(params)
-        def semesterModule = new SemesterModule(params)
-        semesterModule.id = 1
+        def semester = new Semester(params)
+        semester.id = 1
 
-        controller.update(semesterModule)
+        controller.update(semester)
 
         then:"A redirect is issued to the show action"
-        response.redirectedUrl == '/semesterModule/show/1'
+        response.redirectedUrl == '/semester/show/1'
         controller.flash.message != null
     }
 
     void "Test the update action with an invalid instance"() {
         given:
-        controller.semesterModuleService = Mock(SemesterModuleService) {
-            1 * save(_ as SemesterModule) >> { SemesterModule semesterModule ->
-                throw new ValidationException("Invalid instance", semesterModule.errors)
+        controller.semesterService = Mock(SemesterService) {
+            1 * save(_ as Semester) >> { Semester semester ->
+                throw new ValidationException("Invalid instance", semester.errors)
             }
         }
 
         when:"The save action is executed with an invalid instance"
         request.contentType = FORM_CONTENT_TYPE
         request.method = 'PUT'
-        controller.update(new SemesterModule())
+        controller.update(new Semester())
 
         then:"The edit view is rendered again with the correct model"
-        model.semesterModule != null
+        model.semester != null
         view == 'edit'
     }
 
@@ -199,13 +199,13 @@ class SemesterModuleControllerSpec extends Specification implements ControllerUn
         controller.delete(null)
 
         then:"A 404 is returned"
-        response.redirectedUrl == '/semesterModule/index'
+        response.redirectedUrl == '/semester/index'
         flash.message != null
     }
 
     void "Test the delete action with an instance"() {
         given:
-        controller.semesterModuleService = Mock(SemesterModuleService) {
+        controller.semesterService = Mock(SemesterService) {
             1 * delete(2)
         }
 
@@ -215,7 +215,7 @@ class SemesterModuleControllerSpec extends Specification implements ControllerUn
         controller.delete(2)
 
         then:"The user is redirected to index"
-        response.redirectedUrl == '/semesterModule/index'
+        response.redirectedUrl == '/semester/index'
         flash.message != null
     }
 }

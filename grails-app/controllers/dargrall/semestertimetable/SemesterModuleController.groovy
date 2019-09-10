@@ -1,4 +1,4 @@
-package org.semstertimetable
+package dargrall.semestertimetable
 
 import grails.validation.ValidationException
 import static org.springframework.http.HttpStatus.*

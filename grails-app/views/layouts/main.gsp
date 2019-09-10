@@ -20,18 +20,39 @@
 
 <body>
 
-<nav class="navbar navbar-expand-lg navbar-dark navbar-static-top" role="navigation">
-    <a class="navbar-brand" href="/#"><asset:image src="grails.svg" alt="Grails Logo"/></a>
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarContent" aria-controls="navbarContent" aria-expanded="false" aria-label="Toggle navigation">
+<nav class="navbar navbar-expand-lg navbar-primary bg-primary">
+    <g:link class="navbar-brand" controller="semester" action="timetable"><g:message code="semestertimetable.label"/></g:link>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
     </button>
-
-    <div class="collapse navbar-collapse" aria-expanded="false" style="height: 0.8px;" id="navbarContent">
-        <ul class="nav navbar-nav ml-auto">
-            <g:pageProperty name="page.nav"/>
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav mr-auto">
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#" id="semesterModuleDropdown" role="button" data-toggle="dropdown"  aria-haspopup="true" aria-expanded="false">
+                    <g:message code="semestermodule.label"/>
+                </a>
+                <div class="dropdown-menu" aria-labelledby="semesterModuleDropdown">
+                    <g:link controller="semesterModule" action="create" class="dropdown-item"><g:message code="semestermodule.create.label"/></g:link>
+                    <div class="dropdown-divider"></div>
+                    <g:link controller="semesterModule" class="dropdown-item"><g:message code="semestermodule.list.label"/></g:link>
+                </div>
+            </li>
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#" id="semesterDropdown" role="button" data-toggle="dropdown"  aria-haspopup="true" aria-expanded="false">
+                    <g:message code="semester.label"/>
+                </a>
+                <div class="dropdown-menu" aria-labelledby="semesterDropdown">
+                    <g:link controller="semester" action="create" class="dropdown-item"><g:message code="semester.create.label"/></g:link>
+                    <div class="dropdown-divider"></div>
+                    <g:link controller="semester" class="dropdown-item"><g:message code="semester.list.label"/></g:link>
+                </div>
+            </li>
         </ul>
+        <form class="form-inline my-2 my-lg-0">
+            <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+            <button class="btn btn-outline-secondary my-2 my-sm-0" type="submit">Search</button>
+        </form>
     </div>
-
 </nav>
 
 <g:layoutBody/>

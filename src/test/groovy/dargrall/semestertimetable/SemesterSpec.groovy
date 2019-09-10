@@ -1,9 +1,9 @@
-package org.semstertimetable
+package dargrall.semestertimetable
 
 import grails.testing.gorm.DomainUnitTest
 import spock.lang.Specification
 
-class SemesterModuleSpec extends Specification implements DomainUnitTest<SemesterModule> {
+class SemesterSpec extends Specification implements DomainUnitTest<Semester> {
 
     def setup() {
     }

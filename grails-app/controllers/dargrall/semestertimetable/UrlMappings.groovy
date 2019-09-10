@@ -1,4 +1,4 @@
-package semestertimetable
+package dargrall.semestertimetable
 
 class UrlMappings {
 
