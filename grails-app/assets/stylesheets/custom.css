@@ -11,7 +11,7 @@
 /* Timetable */
 div.semesterBody {
     float: left;
-    width: 10em;
+    width: 20em;
     height: 30em;
 }
 
@@ -19,8 +19,28 @@ h2 {
     clear: both;
 }
 
-li.semesterModule {
-    width: 10em;
-    float: left;
+li.semesterModule, li#semesterModuleGhost {
+    width: 20em;
     text-align: center;
+    list-style: none;
+    background: darkgray;
+    border: 1px solid black;
+}
+
+li.semesterModule {
+    float: left;
+    margin: 5px;
+}
+
+li#semesterModuleGhost {
+    opacity: 0.5;
+    border-style: dashed;
+}
+
+ul.semesterModules {
+    height: 100%;
+}
+
+ul.semesterModules li.semesterModule, ul.semesterModules li#semesterModuleGhost {
+    margin: -1px;
 }
