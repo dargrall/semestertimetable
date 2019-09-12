@@ -1,3 +1,7 @@
+#content {
+    margin-left: 10%;
+    margin-right: 10%;
+}
 /* Opens navbar menus on mouseover*/
 .dropdown:hover .dropdown-menu {
     display: block;
@@ -27,9 +31,14 @@ li.semesterModule, li#semesterModuleGhost {
     border: 1px solid black;
 }
 
+li.semesterModule:hover, li#semesterModuleGhost:hover {
+    cursor: move;
+}
+
 li.semesterModule {
     float: left;
     margin: 5px;
+    z-index: 9000;
 }
 
 li#semesterModuleGhost {
@@ -43,4 +52,16 @@ ul.semesterModules {
 
 ul.semesterModules li.semesterModule, ul.semesterModules li#semesterModuleGhost {
     margin: -1px;
+}
+
+ul.moduleList {
+    background: lightgray;
+    border: 1px solid darkgray;
+    box-shadow: black;
+}
+
+ul.moduleList::after {
+    content: "";
+    clear: both;
+    display: table;
 }

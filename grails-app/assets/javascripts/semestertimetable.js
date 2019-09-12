@@ -1,15 +1,30 @@
 $(document).ready(function() {
-    $('.semesterModule').draggable({
+    $(".semesterModule").draggable({
         revert: "invalid",
         /*helper: "clone",*/
         cursor: "move"
     });
-    $('.semesterModules').droppable( {
+
+    $(".semesterModules").droppable( {
         accept: ".semesterModule",
         classes: {
             "ui-droppable-active": "ui-state-active",
             "ui-droppable-hover": "ui-state-hover"
         },
+        drop: function(event, ui) {
+            removePreview($(this), ui);
+
+            insertModule($(this), ui);
+        },
+        over: function(event, ui) {
+            previewDrop($(this), ui)
+        },
+        out: function (event, ui) {
+            removePreview($(this), ui);
+        }
+    });
+
+    $(".moduleList").droppable({
         drop: function(event, ui) {
             removePreview($(this), ui);
 
