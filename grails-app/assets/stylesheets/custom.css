@@ -65,3 +65,7 @@ ul.moduleList::after {
     clear: both;
     display: table;
 }
+
+div#newSemester {
+    display: none;
+}

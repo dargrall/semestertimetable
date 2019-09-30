@@ -10,6 +10,7 @@
     <asset:link rel="icon" href="favicon.ico" type="image/x-ico"/>
 
     <asset:stylesheet src="application.css"/>
+    <asset:stylesheet src="fontawesome.css" rel="stylesheet"/>
 
     <asset:stylesheet src="jquery-ui.css" rel="stylesheet"/>
     <asset:javascript src="jquery-ui-1.12.1/external/jquery/jquery.js"/>
