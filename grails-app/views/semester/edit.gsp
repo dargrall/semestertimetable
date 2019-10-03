@@ -29,7 +29,8 @@
             <g:form resource="${this.semester}" method="PUT">
                 <g:hiddenField name="version" value="${this.semester?.version}" />
                 <fieldset class="form">
-                    <f:all bean="semester"/>
+                    <f:all bean="semester" except="['modules']"/>
+                    <f:display bean="semester" property="modules"/>
                 </fieldset>
                 <fieldset class="buttons">
                     <input class="save" type="submit" value="${message(code: 'default.button.update.label', default: 'Update')}" />

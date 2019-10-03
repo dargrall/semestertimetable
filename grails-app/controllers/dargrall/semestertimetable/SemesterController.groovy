@@ -1,6 +1,8 @@
 package dargrall.semestertimetable
 
 import grails.validation.ValidationException
+import org.springframework.http.HttpStatus
+
 import static org.springframework.http.HttpStatus.*
 
 class SemesterController {
@@ -90,9 +92,37 @@ class SemesterController {
 
     def timetable(Integer max) {
         params.max = Math.min(max ?: 10, 100)
-        List semesterList = semesterService.list(params)
-        List semesterModuleList = semesterModuleService.list(params)
-        respond semesterList, model:[semesterCount: semesterService.count(), semesterModuleList: semesterModuleList], view: '/timetable'
+        def semesterList = semesterService.list(params)
+        Set assignedModules = []
+        semesterList.each{
+            it.modules.each{
+                assignedModules.add(it.id)
+            }
+        }
+        def semesterModuleList = SemesterModule.list()
+        def availableModules = []
+
+        semesterModuleList.each {
+            if (!(it.id in assignedModules)) {
+                availableModules.push(it)
+            }
+        }
+
+        respond semesterList, model:[semesterCount: semesterService.count(), semesterModuleList: availableModules], view: '/timetable'
+    }
+
+    def addModule() {
+        def semester = semesterService.get(params.semesterId)
+        def module = semesterModuleService.get(params.moduleId)
+        semester?.addToModules(module)
+        try {
+            semesterService.save(semester)
+            render contentType: "application/json", text: '{"response": "Module successfully added"}', status: OK
+            return
+        } catch(Exception e) {
+            render contentType: "application/json", text:  '{"response": "Module could not be added"}', status: BAD_REQUEST
+        }
+
     }
 
     protected void notFound() {

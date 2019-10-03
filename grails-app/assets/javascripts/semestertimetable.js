@@ -1,7 +1,6 @@
 $(document).ready(function() {
 
     // Variables
-    var semesterData = {semesters: []};
 
     // JQueryUI stuff
     $(".semesterModule").draggable({
@@ -60,7 +59,6 @@ $(document).ready(function() {
             .attr("id", "semesterModuleGhost")
             .attr("style", "");
         copy.appendTo($container);
-        console.log(ui.draggable);
     }
 
     function removePreview($container, ui) {
@@ -68,7 +66,17 @@ $(document).ready(function() {
     }
 
     function insertModule($container, ui) {
-        ui.draggable.attr("style", "").appendTo($container);
+        var semesterId = $container.find("form").find("input[name='id']").val();
+console.log($container);
+console.log(semesterId);
+        var moduleId = ui.draggable.find("form").find("input[name='id']").val();
+        addModuleToSemester(semesterId, moduleId);
+        ui.draggable
+            .attr("style", "")
+            .hide()
+            .appendTo($container)
+            .end()
+            .fadeIn("slow");
     }
 
     function addSemesterTemplate() {
@@ -81,7 +89,27 @@ $(document).ready(function() {
             name: name,
             modules: []
         };
-        semesterData.semesters.push(semester);
+
         console.log(semesterData);
+    }
+
+    function addModuleToSemester(semesterId, moduleId) {
+        var data = {
+            semesterId: semesterId,
+            moduleId: moduleId
+        }
+        $.ajax({
+            url: "addModule",
+            type: "POST",
+            data: data,
+            success: function(data) {
+                // Do some fancy toast or shit like that
+                console.log(data.response);
+            },
+            error: function(xhr, status, error) {
+                console.log(status);
+                console.log(error);
+            }
+        });
     }
 });

@@ -28,6 +28,7 @@
             <g:form resource="${this.semester}" method="POST">
                 <fieldset class="form">
                     <f:all bean="semester" except="['modules']"/>
+                    <f:display bean="semester" property="modules"/>
                 </fieldset>
                 <fieldset class="buttons">
                     <g:submitButton name="create" class="save" value="${message(code: 'default.button.create.label', default: 'Create')}" />
