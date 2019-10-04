@@ -3,8 +3,8 @@
     <div class="semesterHeader card-header">
         <g:if test="${semester}">
             <form name="semesterData">
-                <input name="id" type="hidden" value="${semester?.id}"/>
-                <input name="name" type="hidden" value="${semester?.name}"/>
+                <input name="semester.id" type="hidden" value="${semester?.id}"/>
+                <input name="semester.name" type="hidden" value="${semester?.name}"/>
                 %{--<input name="id" type="hidden" value="${semester.id}"/>--}%
             </form>
             ${semester.name}

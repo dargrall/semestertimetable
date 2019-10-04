@@ -66,10 +66,11 @@ $(document).ready(function() {
     }
 
     function insertModule($container, ui) {
-        var semesterId = $container.find("form").find("input[name='id']").val();
-console.log($container);
-console.log(semesterId);
-        var moduleId = ui.draggable.find("form").find("input[name='id']").val();
+        var semesterId = $container.parent().find("form").find("input[name='semester.id']").val();
+console.log($container.parent());
+        var moduleId = ui.draggable.find("form").find("input[name='module.id']").val();
+    console.log(semesterId);
+    console.log(moduleId);
         addModuleToSemester(semesterId, moduleId);
         ui.draggable
             .attr("style", "")

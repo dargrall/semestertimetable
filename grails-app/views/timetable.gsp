@@ -5,9 +5,6 @@
 </head>
 <body>
     <h1>Welcome to your Semester Timetable</h1>
-    <form id="inputData">
-        <input name="" type="hidden"
-    </form>
     <div id="timetable">
         <g:each in="${semesterList}" var="semester">
             <g:render template="/semesterTemplate" model="[semester: semester]"/>
