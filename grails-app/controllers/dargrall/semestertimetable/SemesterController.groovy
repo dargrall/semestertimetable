@@ -132,8 +132,15 @@ class SemesterController {
     def removeModule() {
         def semester = semesterService.get(params.semesterId)
         def module = semesterModuleService.get(params.moduleId)
-        semester?.removeFromModules(module)
+        def updatedModules = []
+        semester.modules.each{
+            if (it.id != module.id) {
+                updatedModules.add(it)
+            }
+        }
+        semester.modules = updatedModules
         try {
+            semesterService.save(semester)
             render contentType: "application/json", text: '{"response": "Module successfully removed"}', status: OK
             return
         } catch(Exception e) {

@@ -5,7 +5,6 @@ class SemesterModule {
     int credits
     Boolean completed
     Float grade
-    static hasOne = [semester: Semester]
     static mapping = {
         sort name: "desc"
     }

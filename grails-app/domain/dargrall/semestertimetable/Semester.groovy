@@ -3,7 +3,8 @@ package dargrall.semestertimetable
 class Semester {
     Date start
     Date end
-    static hasMany = [modules: SemesterModule]
+    List<SemesterModule> modules
+    static embedded = ['modules']
     static constraints = {
         id()
         start nullable: true

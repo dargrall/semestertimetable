@@ -6,11 +6,23 @@ $(document).ready(function() {
     $(".semesterModule").draggable({
         revert: "invalid",
         /*helper: "clone",*/
-        cursor: "move"
+        cursor: "move",
+        start: function(event, ui) {
+            if ($(this).parent().hasClass("moduleList")) {
+                $(this).addClass("availableModule");
+            } else {
+                $(this).removeClass("availableModule");
+            }
+        }
     });
 
     $(".semesterModules").droppable({
-        accept: ".semesterModule",
+        accept: function(dropElem) {
+            if ($(this).find(dropElem).length == 0 && dropElem.hasClass("semesterModule")) {
+                return true;
+            }
+            return false;
+        },
         classes: {
             "ui-droppable-active": "ui-state-active",
             "ui-droppable-hover": "ui-state-hover"
@@ -18,6 +30,12 @@ $(document).ready(function() {
         drop: function (event, ui) {
             removePreview($(this), ui);
             insertModule($(this), ui);
+            if (!ui.draggable.hasClass("availableModule")) {
+                var semesterId = ui.draggable.closest(".semesterBody").find("form").find("input[name='semester.id']").val();
+                var moduleId = ui.draggable.find("form").find("input[name='module.id']").val();
+console.log(semesterId, moduleId);
+                removeModuleFromSemester(semesterId, moduleId);
+            }
         },
         over: function (event, ui) {
             previewDrop($(this), ui)
@@ -28,6 +46,12 @@ $(document).ready(function() {
     });
 
     $(".moduleList").droppable({
+        accept: function(dropElem) {
+            if ($(this).find(dropElem).length == 0 && dropElem.hasClass("semesterModule")) {
+                return true;
+            }
+            return false;
+        },
         drop: function (event, ui) {
             removePreview($(this), ui);
             removeModule($(this), ui, ui.draggable.parent());
