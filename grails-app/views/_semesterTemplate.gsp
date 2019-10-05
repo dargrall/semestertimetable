@@ -1,13 +1,12 @@
 <g:set var="semesterType" value="${(!semester) ? 'newSemester' : ''}"/>
-<div class="semesterBody card" id="${semesterType}">
+<div class="semesterBody card col" id="${semesterType}">
     <div class="semesterHeader card-header">
         <g:if test="${semester}">
             <form name="semesterData">
                 <input name="semester.id" type="hidden" value="${semester?.id}"/>
-                <input name="semester.name" type="hidden" value="${semester?.name}"/>
                 %{--<input name="id" type="hidden" value="${semester.id}"/>--}%
             </form>
-            ${semester.name}
+            ${semester.id}. <g:message code="semester.label"/>
         </g:if>
         <g:else>
             <input id="newSemesterName" type="text" value="${message(code: "newSemester.label")}"/>
@@ -18,4 +17,5 @@
             <g:render template="../semesterModuleTemplate" model="[module: it]"/>
         </g:each>
     </ul>
+    <span class="semesterCredits">${semester?.credits}</span>
 </div>
