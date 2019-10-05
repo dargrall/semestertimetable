@@ -94,10 +94,15 @@ class SemesterController {
         params.max = Math.min(max ?: 10, 100)
         def semesterList = semesterService.list(params)
         Set assignedModules = []
+        def totalCredits = 0
         semesterList.each{
+            def semesterCredits = 0
             it.modules.each{
                 assignedModules.add(it.id)
+                semesterCredits += it.credits
             }
+            totalCredits += semesterCredits
+            it.credits = semesterCredits
         }
         def semesterModuleList = SemesterModule.list()
         def availableModules = []
@@ -108,7 +113,7 @@ class SemesterController {
             }
         }
 
-        respond semesterList, model:[semesterCount: semesterService.count(), semesterModuleList: availableModules], view: '/timetable'
+        respond semesterList, model:[semesterCount: semesterService.count(), semesterModuleList: availableModules, totalCredits: totalCredits], view: '/timetable'
     }
 
     def addModule() {
@@ -122,7 +127,18 @@ class SemesterController {
         } catch(Exception e) {
             render contentType: "application/json", text:  '{"response": "Module could not be added"}', status: BAD_REQUEST
         }
+    }
 
+    def removeModule() {
+        def semester = semesterService.get(params.semesterId)
+        def module = semesterModuleService.get(params.moduleId)
+        semester?.removeFromModules(module)
+        try {
+            render contentType: "application/json", text: '{"response": "Module successfully removed"}', status: OK
+            return
+        } catch(Exception e) {
+            render contentType: "application/json", text:  '{"response": "Module could not be removed"}', status: BAD_REQUEST
+        }
     }
 
     protected void notFound() {

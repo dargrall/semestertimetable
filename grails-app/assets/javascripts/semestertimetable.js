@@ -30,8 +30,7 @@ $(document).ready(function() {
     $(".moduleList").droppable({
         drop: function (event, ui) {
             removePreview($(this), ui);
-
-            insertModule($(this), ui);
+            removeModule($(this), ui, ui.draggable.parent());
         },
         over: function (event, ui) {
             previewDrop($(this), ui)
@@ -42,14 +41,6 @@ $(document).ready(function() {
     });
 
     // Events
-    $("#addSemester").on("click", addSemesterTemplate);
-    $("#timetable").on("keyup", "#newSemesterName", function (e) {
-        if (e.keyCode == 13) {
-            var name = $(this).val();
-            addSemesterData(name);
-            $(this).replaceWith(name);
-        }
-    });
 
     // Functions
     function previewDrop($container, ui) {
@@ -61,16 +52,9 @@ $(document).ready(function() {
         copy.appendTo($container);
     }
 
-    function removePreview($container, ui) {
-        $container.find('#semesterModuleGhost').remove();
-    }
-
     function insertModule($container, ui) {
         var semesterId = $container.parent().find("form").find("input[name='semester.id']").val();
-console.log($container.parent());
         var moduleId = ui.draggable.find("form").find("input[name='module.id']").val();
-    console.log(semesterId);
-    console.log(moduleId);
         addModuleToSemester(semesterId, moduleId);
         ui.draggable
             .attr("style", "")
@@ -80,20 +64,6 @@ console.log($container.parent());
             .fadeIn("slow");
     }
 
-    function addSemesterTemplate() {
-        var clone = $("#newSemester").clone().removeAttr("id")
-        $("#timetable").append(clone);
-    }
-
-    function addSemesterData(name) {
-        var semester = {
-            name: name,
-            modules: []
-        };
-
-        console.log(semesterData);
-    }
-
     function addModuleToSemester(semesterId, moduleId) {
         var data = {
             semesterId: semesterId,
@@ -101,6 +71,42 @@ console.log($container.parent());
         }
         $.ajax({
             url: "addModule",
+            type: "POST",
+            data: data,
+            success: function(data) {
+                // Do some fancy toast or shit like that
+                console.log(data.response);
+            },
+            error: function(xhr, status, error) {
+                console.log(status);
+                console.log(error);
+            }
+        });
+    }
+
+    function removePreview($container, ui) {
+        $container.find('#semesterModuleGhost').remove();
+    }
+
+    function removeModule($container, ui, $previousParent) {
+        var semesterId = $previousParent.parent(".semesterBody").find("form").find("input[name='semester.id']").val();
+        var moduleId = ui.draggable.find("form").find("input[name='module.id']").val();
+        removeModuleFromSemester(semesterId, moduleId);
+        ui.draggable
+            .attr("style", "")
+            .hide()
+            .appendTo($container)
+            .end()
+            .fadeIn("slow");
+    }
+
+    function removeModuleFromSemester(semesterId, moduleId) {
+        var data = {
+            semesterId: semesterId,
+            moduleId: moduleId
+        }
+        $.ajax({
+            url: "removeModule",
             type: "POST",
             data: data,
             success: function(data) {
