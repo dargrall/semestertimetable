@@ -2,9 +2,10 @@ package dargrall.semestertimetable
 
 import grails.validation.ValidationException
 import static org.springframework.http.HttpStatus.*
+import groovy.json.JsonSlurper
 
 class SemesterModuleController {
-
+    def grailsResourceLocator
     SemesterModuleService semesterModuleService
 
     static allowedMethods = [save: "POST", update: "PUT", delete: "DELETE"]
@@ -87,6 +88,14 @@ class SemesterModuleController {
         }
     }
 
+    def importSemesterModules() {
+/*        def inputFile = new File("./semesterModules.json")
+println inputFile.getText("UTF-8")*/
+       /* def InputJSON = new JsonSlurper().parseText(inputFile.text)
+        InputJSON.each{ println it }*/
+        redirect controller: "semester", action: "timetable"
+    }
+
     protected void notFound() {
         request.withFormat {
             form multipartForm {
@@ -97,8 +106,4 @@ class SemesterModuleController {
         }
     }
 
-    // Displays Semestertimetable
-    def semestertable() {
-            respond semesterModuleService.list(params), model:[semesterModuleCount: semesterModuleService.count()]
-    }
 }
