@@ -5,8 +5,115 @@ import static org.springframework.http.HttpStatus.*
 import groovy.json.JsonSlurper
 
 class SemesterModuleController {
-    def grailsResourceLocator
     SemesterModuleService semesterModuleService
+
+    /* Should be moved into a file after figuring out where to put that file and parse it in grails */
+    def importedSemesterModules =
+            [
+                    "modules":  [
+                        [
+                            name: "Programmieren 1",
+                            credits: 6
+                        ],
+                        [
+                            name: "Algorithmen und Datenstrukturen",
+                            credits: 8
+                        ],
+                        [
+                            name: "Lineare Algebra",
+                            credits: 10
+                        ],
+                        [
+                            name: "Diskrete Mathematik",
+                            credits: 5
+                        ],
+                        [
+                            name: "Programmieren 2",
+                            credits: 6
+                        ],
+                        [
+                            name: "Logik",
+                            credits: 5
+                        ],
+                        [
+                            name: "Analysis",
+                            credits: 10
+                        ],
+                        [
+                            name: "Algebra",
+                            credits: 5
+                        ],
+                        [
+                            name: "Wissenschaftliches Arbeiten",
+                            credits: 2
+                        ],
+                        [
+                            name: "Ethik",
+                            credits: 2
+                        ],
+                        [
+                            name: "Software Engineering 1",
+                            credits: 5
+                        ],
+                        [
+                            name: "Theoretische Informatik 1",
+                            credits: 5
+                        ],
+                        [
+                            name: "Betriebssysteme",
+                            credits: 5
+                        ],
+                        [
+                            name: "Relationale Datenbanksysteme 1",
+                            credits: 5
+                        ],
+                        [
+                            name: "Numerik",
+                            credits: 5
+                        ],
+                        [
+                            name: "Unternehmensführung und Marketing",
+                            credits: 6
+                        ],
+                        [
+                            name: "SEP",
+                            credits: 7
+                        ],
+                        [
+                            name: "Theoretische Informatik 2",
+                            credits: 6
+                        ],
+                        [
+                            name: "Computernetze 1",
+                            credits: 5
+                        ],
+                        [
+                            name: "Technische Informatik",
+                            credits: 5
+                        ],
+                        [
+                            name: "Seminar",
+                            credits: 5
+                        ],
+                        [
+                            name: "Teamprojekt",
+                            credits: 5
+                        ],
+                        [
+                            name: "Einführung i.d. IT-Sicherheit",
+                            credits: 5
+                        ],
+                        [
+                            name: "Bachelorarbeit",
+                            credits: 6
+                        ],
+                        [
+                            name: "Literaturrecherche",
+                            credits: 2
+                        ]
+                    ]
+            ]
+            
 
     static allowedMethods = [save: "POST", update: "PUT", delete: "DELETE"]
 
@@ -89,10 +196,10 @@ class SemesterModuleController {
     }
 
     def importSemesterModules() {
-/*        def inputFile = new File("./semesterModules.json")
-println inputFile.getText("UTF-8")*/
-       /* def InputJSON = new JsonSlurper().parseText(inputFile.text)
-        InputJSON.each{ println it }*/
+        importedSemesterModules.modules.each {
+            def newSemesterModule = new SemesterModule(it)
+            newSemesterModule.save()
+        }
         redirect controller: "semester", action: "timetable"
     }
 

@@ -9,7 +9,7 @@
             ${semester.id}. <g:message code="semester.label"/>
         </g:if>
         <g:else>
-            <input id="newSemesterName" type="text" value="${message(code: "newSemester.label")}"/>
+            <g:message code="semester.add.label"/>
         </g:else>
     </div>
     <ul class="semesterModules list-group list-group-flush">
