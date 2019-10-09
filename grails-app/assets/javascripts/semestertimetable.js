@@ -33,9 +33,9 @@ $(document).ready(function() {
             if (!ui.draggable.hasClass("availableModule")) {
                 var semesterId = ui.draggable.closest(".semesterBody").find("form").find("input[name='semester.id']").val();
                 var moduleId = ui.draggable.find("form").find("input[name='module.id']").val();
-console.log(semesterId, moduleId);
                 removeModuleFromSemester(semesterId, moduleId);
             }
+            calculateCredits();
         },
         over: function (event, ui) {
             previewDrop($(this), ui)
@@ -53,8 +53,10 @@ console.log(semesterId, moduleId);
             return false;
         },
         drop: function (event, ui) {
+            var semBody = ui.draggable.parent();
             removePreview($(this), ui);
-            removeModule($(this), ui, ui.draggable.parent());
+            removeModule($(this), ui, semBody);
+            calculateCredits();
         },
         over: function (event, ui) {
             previewDrop($(this), ui)
@@ -66,7 +68,31 @@ console.log(semesterId, moduleId);
 
     // Events
 
+    $('#addSemester').click(addSemester);
+
     // Functions
+
+    function addSemester() {
+        $.ajax({
+            url: "addSemester",
+            type: "POST",
+            success: function() {
+                displayNewSemester();
+            },
+            error: function(xhr, status, error) {
+                console.log(status);
+                console.log(error);
+            }
+        });
+    }
+
+    function displayNewSemester() {
+        var semesterCard = $("#timetable").find("#newSemester").clone();
+        semesterCard.removeAttr("id");
+        $('#timetable').append(semesterCard);
+        location.reload();
+    }
+
     function previewDrop($container, ui) {
         var copy = ui.draggable
             .clone()
@@ -128,7 +154,7 @@ console.log(semesterId, moduleId);
         var data = {
             semesterId: semesterId,
             moduleId: moduleId
-        }
+        };
         $.ajax({
             url: "removeModule",
             type: "POST",
@@ -142,5 +168,20 @@ console.log(semesterId, moduleId);
                 console.log(error);
             }
         });
+    }
+
+    function calculateCredits() {
+        var semCredits = 0;
+        var totalCredits = 0;
+        $(".semesterBody").each(function() {
+            semCredits = 0;
+            $(this).find("input[name='module.credits']").each(function() {
+                semCredits += parseInt($(this).val());
+            });
+            $(this).find(".semesterCredits").text(semCredits);
+            totalCredits += semCredits;
+        });
+        $("#totalCredits").text("Total: " + totalCredits);
+console.log(totalCredits);
     }
 });

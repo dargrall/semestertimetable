@@ -116,6 +116,17 @@ class SemesterController {
         respond semesterList, model:[semesterCount: semesterService.count(), semesterModuleList: availableModules, totalCredits: totalCredits], view: '/timetable'
     }
 
+    def addSemester() {
+        Semester sem = new Semester()
+        try {
+            semesterService.save(sem)
+            render contentType: "application/json", text: '{"response": "Semester successfully added"}', status: OK
+            return
+        } catch(Exception e) {
+            render contentType: "application/json", text:  '{"response": "Semester could not be added"}', status: BAD_REQUEST
+        }
+    }
+
     def addModule() {
         def semester = semesterService.get(params.semesterId)
         def module = semesterModuleService.get(params.moduleId)

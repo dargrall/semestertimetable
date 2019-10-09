@@ -11,4 +11,9 @@ class Semester {
         end nullable: true
         modules nullable: true
     }
+
+    String toString() {
+        String name = id.toString() + ". " + "Semester"
+        return name
+    }
 }

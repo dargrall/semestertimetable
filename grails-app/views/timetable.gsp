@@ -9,6 +9,11 @@
             <h1>Welcome to your Semester Timetable</h1>
         </div>
         <div class="row">
+            <button id="addSemester" class="btn-primary">
+                <g:message code="semester.create.label"/>
+            </button>
+        </div>
+        <div class="row">
             <span id="credits" class="col-1 align-self-end"><g:message code="credits.label"/></span>
             <div id="timetable" class="col-10">
                 <div class="row">
