@@ -17,8 +17,8 @@
             <span id="credits" class="col-1 align-self-end"><g:message code="credits.label"/></span>
             <div id="timetable" class="col-10">
                 <div class="row">
-                    <g:each in="${semesterList}" var="semester">
-                        <g:render template="/semesterTemplate" model="[semester: semester]"/>
+                    <g:each in="${semesterToModules}" var="semesterMap">
+                        <g:render template="/semesterTemplate" model="[semesterMap: semesterMap]"/>
                     </g:each>
                 </div>
                 <g:render template="/semesterTemplate" model="null"/>

@@ -16,6 +16,8 @@ $(document).ready(function() {
         }
     });
 
+    // Used to track the sourceSemester when moving modules from one semester to another
+    let sourceSemesterId;
     $(".semesterModules").droppable({
         accept: function(dropElem) {
             if ($(this).find(dropElem).length == 0 && dropElem.hasClass("semesterModule")) {
@@ -31,13 +33,14 @@ $(document).ready(function() {
             removePreview($(this), ui);
             insertModule($(this), ui);
             if (!ui.draggable.hasClass("availableModule")) {
-                var semesterId = ui.draggable.closest(".semesterBody").find("form").find("input[name='semester.id']").val();
                 var moduleId = ui.draggable.find("form").find("input[name='module.id']").val();
-                removeModuleFromSemester(semesterId, moduleId);
+                removeModuleFromSemester(sourceSemesterId, moduleId);
             }
             calculateCredits();
         },
         over: function (event, ui) {
+            sourceSemesterId = ui.draggable.closest(".semesterBody").find("form").find("input[name='semester.id']").val();
+            console.log(sourceSemesterId);
             previewDrop($(this), ui)
         },
         out: function (event, ui) {
@@ -69,6 +72,11 @@ $(document).ready(function() {
     // Events
 
     $('#addSemester').click(addSemester);
+    $('.semesterModule').dblclick(function () {
+console.log($(this).find("form").find("input[name='module.id']").val());
+        let id = $(this).find("form").find("input[name='module.id']").val();
+        editSemester(id);
+    });
 
     // Functions
 
@@ -84,6 +92,10 @@ $(document).ready(function() {
                 console.log(error);
             }
         });
+    }
+
+    function editSemester(id) {
+        window.location.href = "/semesterModule/edit/" + id;
     }
 
     function displayNewSemester() {

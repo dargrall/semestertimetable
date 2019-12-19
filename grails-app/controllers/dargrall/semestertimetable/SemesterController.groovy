@@ -32,6 +32,7 @@ class SemesterController {
         }
 
         try {
+
             semesterService.save(semester)
         } catch (ValidationException e) {
             respond semester.errors, view:'create'
@@ -92,28 +93,38 @@ class SemesterController {
 
     def timetable(Integer max) {
         params.max = Math.min(max ?: 10, 100)
+
+        List semesterToModules = []
+
         def semesterList = semesterService.list(params)
+        semesterList.each { semester ->
+            def modules = semester.moduleIds.collect {
+                return semesterModuleService.get(it)
+            }
+            semesterToModules.add(["semester": semester, "modules": modules])
+        }
+
         Set assignedModules = []
         def totalCredits = 0
-        semesterList.each{
+        semesterToModules.each{
             def semesterCredits = 0
             it.modules.each{
-                assignedModules.add(it.id)
+                assignedModules.add(it)
                 semesterCredits += it.credits
             }
             totalCredits += semesterCredits
-            it.credits = semesterCredits
+            it.semester.credits = semesterCredits
         }
         def semesterModuleList = SemesterModule.list()
-        def availableModules = []
+        def availableModules = semesterModuleList - assignedModules
 
-        semesterModuleList.each {
+        /*semesterModuleList.each {
             if (!(it.id in assignedModules)) {
                 availableModules.push(it)
             }
-        }
+        }*/
 
-        respond semesterList, model:[semesterCount: semesterService.count(), semesterModuleList: availableModules, totalCredits: totalCredits], view: '/timetable'
+        respond 1, model:[semesterToModules: semesterToModules, semesterCount: semesterService.count(), semesterModuleList: availableModules, totalCredits: totalCredits], view: '/timetable'
     }
 
     def addSemester() {
@@ -128,9 +139,9 @@ class SemesterController {
     }
 
     def addModule() {
-        def semester = semesterService.get(params.semesterId)
-        def module = semesterModuleService.get(params.moduleId)
-        semester?.addToModules(module)
+        def semester = semesterService.get(params.semesterId.toLong())
+        Long moduleId = params.moduleId.toLong()
+        semester?.moduleIds?.add(moduleId)
         try {
             semesterService.save(semester)
             render contentType: "application/json", text: '{"response": "Module successfully added"}', status: OK
@@ -141,15 +152,16 @@ class SemesterController {
     }
 
     def removeModule() {
-        def semester = semesterService.get(params.semesterId)
-        def module = semesterModuleService.get(params.moduleId)
+        def semester = semesterService.get(params.semesterId.toLong())
+        def module = params.moduleId.toLong()
         def updatedModules = []
-        semester.modules.each{
-            if (it.id != module.id) {
+        semester.moduleIds.each{
+            if (it != module) {
                 updatedModules.add(it)
             }
         }
-        semester.modules = updatedModules
+println semester
+        semester.moduleIds = updatedModules
         try {
             semesterService.save(semester)
             render contentType: "application/json", text: '{"response": "Module successfully removed"}', status: OK

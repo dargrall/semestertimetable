@@ -105,7 +105,7 @@ class SemesterModuleController {
                         ],
                         [
                             name: "Bachelorarbeit",
-                            credits: 6
+                            credits: 12
                         ],
                         [
                             name: "Literaturrecherche",

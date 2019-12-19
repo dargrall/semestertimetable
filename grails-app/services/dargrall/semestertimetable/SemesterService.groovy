@@ -5,13 +5,13 @@ import grails.gorm.services.Service
 @Service(Semester)
 interface SemesterService {
 
-    Semester get(Serializable id)
+    Semester get(Long id)
 
     List<Semester> list(Map args)
 
     Long count()
 
-    void delete(Serializable id)
+    void delete(Long id)
 
     Semester save(Semester semester)
 

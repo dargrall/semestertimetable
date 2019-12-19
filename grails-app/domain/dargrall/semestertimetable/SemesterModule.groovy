@@ -1,6 +1,7 @@
 package dargrall.semestertimetable
 
 class SemesterModule {
+    Long id
     String name
     int credits
     Boolean completed

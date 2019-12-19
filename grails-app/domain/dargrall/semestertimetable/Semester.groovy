@@ -1,15 +1,15 @@
 package dargrall.semestertimetable
 
 class Semester {
+    Long id
     Date start
     Date end
-    List<SemesterModule> modules
-    static embedded = ['modules']
+    List<Long> moduleIds = []
     static constraints = {
         id()
         start nullable: true
         end nullable: true
-        modules nullable: true
+        moduleIds nullable: true
     }
 
     String toString() {
